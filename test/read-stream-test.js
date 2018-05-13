@@ -11,7 +11,6 @@ var SlowStream = require('slow-stream')
 var delayed = require('delayed')
 var rimraf = require('rimraf')
 var async = require('async')
-var msgpack = require('msgpack-js')
 var assert = require('referee').assert
 var refute = require('referee').refute
 var buster = require('bustermove')
@@ -417,9 +416,9 @@ buster.testCase('ReadStream', {
     var options = {
       keyEncoding: 'utf8',
       valueEncoding: {
-        decode: msgpack.decode,
-        encode: msgpack.encode,
-        buffer: true
+        encode: JSON.stringify,
+        decode: JSON.parse,
+        buffer: false
       }}
     var data = [
       { type: 'put', key: 'aa', value: { a: 'complex', obj: 100 } },
