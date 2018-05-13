@@ -60,7 +60,9 @@ module.exports.commonTearDown = function (done) {
 }
 
 module.exports.loadBinaryTestData = function (callback) {
-  fs.readFile(path.join(__dirname, 'data/testdata.bin'), callback)
+  // Read synchronously to avoid an issue with brfs
+  var buf = fs.readFileSync(path.join(__dirname, 'data/testdata.bin'))
+  process.nextTick(callback, null, buf)
 }
 
 module.exports.binaryTestDataMD5Sum = '920725ef1a3b32af40ccd0b78f4a62fd'
