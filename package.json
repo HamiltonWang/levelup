@@ -54,9 +54,9 @@
     "memdown": "^2.0.0",
     "referee": "~1.2.0",
     "safe-buffer": "^5.1.0",
-    "slow-stream": "0.0.4",
     "standard": "^11.0.0",
-    "tape": "^4.7.0"
+    "tape": "^4.7.0",
+    "trickle": "0.0.2"
   },
   "scripts": {
     "test": "standard && node test | faucet"
