@@ -3,6 +3,11 @@
  * MIT License <https://github.com/level/levelup/blob/master/LICENSE.md>
  */
 
+// Promise polyfill for IE and others.
+if (process.browser && typeof Promise !== 'function') {
+  global.Promise = require('pinkie')
+}
+
 require('./argument-checking-test')
 require('./batch-test')
 require('./binary-test')
