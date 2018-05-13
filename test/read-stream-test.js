@@ -4,7 +4,7 @@
  */
 
 var levelup = require('../lib/levelup.js')
-var leveldown = require('leveldown')
+var memdown = require('memdown')
 var encDown = require('encoding-down')
 var common = require('./common')
 var SlowStream = require('slow-stream')
@@ -562,9 +562,8 @@ buster.testCase('ReadStream', {
   // i.e. not waiting for 'open' to complete
   // the logic for this is inside the ReadStream constructor which waits for 'ready'
   'test ReadStream on pre-opened db': function (done) {
-    var location = common.nextLocation()
-    var db = levelup(encDown(leveldown(location)))
-    var execute = function (db) {
+    var db = levelup(encDown(memdown()))
+    var execute = function () {
       // is in limbo
       refute(db.isOpen())
       refute(db.isClosed())
@@ -579,7 +578,17 @@ buster.testCase('ReadStream', {
         refute(err)
         db.close(function (err) {
           refute(err)
-          execute(levelup(encDown(leveldown(location))))
+
+          var async = true
+          db.open(function (err) {
+            async = false
+            refute(err, 'no open error')
+          })
+
+          execute()
+
+          // Should open lazily
+          assert(async)
         })
       })
     }.bind(this)
